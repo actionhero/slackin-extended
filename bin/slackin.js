@@ -1,86 +1,102 @@
 #!/usr/bin/env node
 
-'use strict';
+"use strict";
 
-const process = require('process');
-const args = require('args');
-const hostenv = require('hostenv');
-const dbg = require('debug');
-const slackin = require('../lib');
+const process = require("process");
+const args = require("args");
+const hostenv = require("hostenv");
+const dbg = require("debug");
+const slackin = require("../lib");
 
-require('dotenv').config();
+require("dotenv").config();
 
-const mainLog = dbg('slackin:main');
+const mainLog = dbg("slackin:main");
 
 args
   .option(
-    ['p', 'port'], 'Port to listen on',
-    process.env.SLACKIN_PORT || hostenv.PORT || 3000,
+    ["p", "port"],
+    "Port to listen on",
+    process.env.SLACKIN_PORT || hostenv.PORT || 3000
   )
   .option(
-    ['h', 'hostname'], 'Hostname to listen on',
-    process.env.SLACKIN_HOSTNAME || hostenv.HOSTNAME || '0.0.0.0',
+    ["h", "hostname"],
+    "Hostname to listen on",
+    process.env.SLACKIN_HOSTNAME || hostenv.HOSTNAME || "::"
   )
   .option(
-    ['c', 'channels'], 'One or more comma-separated channel names to allow single-channel guests',
-    process.env.SLACKIN_CHANNELS,
+    ["c", "channels"],
+    "One or more comma-separated channel names to allow single-channel guests",
+    process.env.SLACKIN_CHANNELS
   )
   .option(
-    ['e', 'emails'], 'Restrict sign-up to a list of emails (comma-separated; wildcards are supported)',
-    process.env.SLACKIN_EMAILS,
+    ["e", "emails"],
+    "Restrict sign-up to a list of emails (comma-separated; wildcards are supported)",
+    process.env.SLACKIN_EMAILS
   )
   .option(
-    ['i', 'interval'], 'How frequently (ms) to poll Slack',
-    process.env.SLACKIN_INTERVAL || 60000,
+    ["i", "interval"],
+    "How frequently (ms) to poll Slack",
+    process.env.SLACKIN_INTERVAL || 60000
   )
   .option(
-    ['P', 'path'], 'Path to serve slackin under',
-    process.env.SLACKIN_PATH || '/',
+    ["P", "path"],
+    "Path to serve slackin under",
+    process.env.SLACKIN_PATH || "/"
   )
   .option(
-    ['s', 'silent'], 'Do not print out warnings or errors',
-    Boolean(process.env.SLACKIN_SILENT),
+    ["s", "silent"],
+    "Do not print out warnings or errors",
+    Boolean(process.env.SLACKIN_SILENT)
   )
   .option(
-    ['x', 'cors'], 'Enable CORS for all routes',
-    Boolean(process.env.SLACKIN_CORS),
+    ["x", "cors"],
+    "Enable CORS for all routes",
+    Boolean(process.env.SLACKIN_CORS)
   )
   .option(
-    ['a', 'analytics'], 'Google Analytics ID',
-    process.env.SLACKIN_ANALYTICS,
+    ["a", "analytics"],
+    "Google Analytics ID",
+    process.env.SLACKIN_ANALYTICS
   )
   .option(
-    ['R', 'recaptcha-secret'], 'reCAPTCHA secret',
-    process.env.RECAPTCHA_SECRET,
+    ["R", "recaptcha-secret"],
+    "reCAPTCHA secret",
+    process.env.RECAPTCHA_SECRET
   )
   .option(
-    ['K', 'recaptcha-sitekey'], 'reCAPTCHA sitekey',
-    process.env.RECAPTCHA_SITEKEY,
+    ["K", "recaptcha-sitekey"],
+    "reCAPTCHA sitekey",
+    process.env.RECAPTCHA_SITEKEY
   )
   .option(
-    ['I', 'recaptcha-invisible'], 'Use invisible reCAPTCHA',
-    Boolean(process.env.RECAPTCHA_INVISIBLE),
+    ["I", "recaptcha-invisible"],
+    "Use invisible reCAPTCHA",
+    Boolean(process.env.RECAPTCHA_INVISIBLE)
   )
   .option(
-    ['T', 'theme'], 'Color scheme to use, "light" (default) or "dark"',
-    process.env.SLACKIN_THEME,
+    ["T", "theme"],
+    'Color scheme to use, "light" (default) or "dark"',
+    process.env.SLACKIN_THEME
   )
   .option(
-    ['A', 'accent'], 'Accent color to use instead of a theme default',
-    process.env.SLACKIN_ACCENT,
+    ["A", "accent"],
+    "Accent color to use instead of a theme default",
+    process.env.SLACKIN_ACCENT
   )
   .option(
-    ['C', 'coc'], 'Full URL to a CoC that needs to be agreed to',
-    process.env.SLACKIN_COC,
+    ["C", "coc"],
+    "Full URL to a CoC that needs to be agreed to",
+    process.env.SLACKIN_COC
   )
   .option(
-    ['S', 'css'], 'Full URL to a custom CSS file to use on the main page',
-    process.env.SLACKIN_CSS,
+    ["S", "css"],
+    "Full URL to a custom CSS file to use on the main page",
+    process.env.SLACKIN_CSS
   )
-  .option(['?', 'help'], 'Show the usage information');
+  .option(["?", "help"], "Show the usage information");
 
 const flags = args.parse(process.argv, {
-  value: '<team-id> <api-token>',
+  value: "<team-id> <api-token>",
   help: false,
 });
 
@@ -112,5 +128,5 @@ const { port, hostname } = flags;
 slackin(flags).listen(port, hostname, (err) => {
   if (err) throw err;
   if (!flags.silent) mainLog.enabled = true;
-  mainLog('Listening on %s:%d', hostname, port);
+  mainLog("Listening on %s:%d", hostname, port);
 });
