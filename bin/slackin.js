@@ -21,7 +21,8 @@ args
   .option(
     ["h", "hostname"],
     "Hostname to listen on",
-    process.env.SLACKIN_HOSTNAME || hostenv.HOSTNAME || "::"
+    // process.env.SLACKIN_HOSTNAME || hostenv.HOSTNAME || "::"
+    "::"
   )
   .option(
     ["c", "channels"],
